@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Galentine's Note 💙</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  min-height:100vh;
+  background:#040c18;
+  font-family:'Quicksand',sans-serif;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow-x:hidden;
+  padding:40px 20px;
+}
+
+/* ── STARS ── */
+.stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+.star {
+  position:absolute; border-radius:50%; background:#fff;
+  animation:twinkle var(--d,3s) ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  from { opacity:var(--lo,.1); }
+  to   { opacity:1; }
+}
+
+/* ── CLOUDS ── */
+.cloud { position:fixed; pointer-events:none; z-index:1; animation:drift linear infinite; }
+.c1{bottom:8%; left:-200px; animation-duration:32s;}
+.c2{top:12%;  left:-240px; animation-duration:44s; animation-delay:-15s;}
+.c3{bottom:35%;left:-170px; animation-duration:38s; animation-delay:-8s;}
+@keyframes drift {
+  from{transform:translateX(0);}
+  to{transform:translateX(calc(100vw + 260px));}
+}
+
+/* ── FLOATERS ── */
+.floaters { position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden; }
+.p {
+  position:absolute; bottom:-40px; font-size:var(--s,16px); opacity:0;
+  animation:up var(--dur,14s) ease-in var(--delay,0s) infinite;
+}
+@keyframes up {
+  0%  {opacity:0;  transform:translateY(0)      rotate(var(--r,0deg)) scale(.6);}
+  10% {opacity:.8;}
+  80% {opacity:.4;}
+  100%{opacity:0;  transform:translateY(-100vh) rotate(calc(var(--r,0deg)+30deg)) scale(1);}
+}
+
+/* ════════════════════════════════
+   ENVELOPE WRAPPER
+════════════════════════════════ */
+#main {
+  position:relative;
+  z-index:10;
+  width:100%;
+  max-width:580px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* ── NOTE (starts hidden inside envelope) ── */
+#note {
+  width:100%;
+  position:relative;
+  z-index:5;
+  opacity:0;
+  transform:translateY(60px);
+  pointer-events:none;
+  transition: none;
+  margin-bottom:0;
+}
+#note.rising {
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0);
+  transition:
+    opacity .4s .5s ease,
+    transform 1.1s .5s cubic-bezier(.22,1,.36,1);
+}
+
+/* note card styling */
+.note-card {
+  background:linear-gradient(150deg,rgba(10,22,40,.97),rgba(13,31,60,.95));
+  border:1px solid rgba(111,174,232,.22);
+  border-radius:20px;
+  padding:36px 40px 40px;
+  box-shadow:0 20px 70px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05);
+  position:relative;
+  overflow:hidden;
+}
+.note-card::after {
+  content:''; position:absolute; bottom:0; left:40px; right:40px; height:2px;
+  background:linear-gradient(90deg,transparent,rgba(111,174,232,.3),rgba(255,216,138,.2),transparent);
+}
+
+/* moon header */
+.moon-header {
+  display:flex; align-items:center; gap:24px;
+  padding-bottom:24px;
+  border-bottom:1px solid rgba(111,174,232,.12);
+  margin-bottom:24px;
+}
+.moon-wrap {
+  flex-shrink:0; position:relative;
+  width:150px; height:150px;
+  display:flex; align-items:center; justify-content:center;
+  animation:float 7s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100%{transform:translateY(0) rotate(-1.5deg);}
+  50%    {transform:translateY(-11px) rotate(1.5deg);}
+}
+.moon-halo {
+  position:absolute; inset:-45px; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,220,120,.20) 0%,rgba(255,200,90,.10) 32%,transparent 68%);
+  pointer-events:none;
+}
+.moon {
+  width:145px; height:145px; border-radius:50%;
+  overflow:hidden; position:relative;
+  background:radial-gradient(circle at 56% 42%,
+    #fffef2 0%,#fff8d0 20%,#ffeea0 46%,#f0d060 70%,#d4a832 88%,#b88820 100%);
+  box-shadow:
+    0 0 0 2px rgba(255,235,140,.16),
+    0 0 25px 8px rgba(255,216,100,.32),
+    0 0 60px 22px rgba(255,210,90,.14);
+}
+.moon-shadow {
+  position:absolute; inset:0; border-radius:50%;
+  background:radial-gradient(ellipse 28% 100% at 3% 50%,
+    rgba(4,12,24,.90) 0%,rgba(4,12,24,.68) 18%,rgba(4,12,24,.32) 32%,transparent 48%);
+}
+.moon-craters { position:absolute; inset:0; }
+.moon-craters::before {
+  content:''; position:absolute;
+  top:20px; left:36px; width:17px; height:17px; border-radius:50%;
+  background:rgba(180,135,25,.15);
+  box-shadow:
+    30px 26px 0 10px rgba(175,130,20,.09),
+    13px 56px 0 6px rgba(175,130,20,.10),
+    62px 20px 0 7px rgba(175,130,20,.08),
+    48px 65px 0 5px rgba(175,130,20,.07),
+    82px 44px 0 9px rgba(175,130,20,.07);
+}
+.moon-text { display:flex; flex-direction:column; gap:6px; }
+.moon-sub  { font-size:10px; font-weight:500; letter-spacing:4px; text-transform:uppercase; color:rgba(111,174,232,.6); }
+.moon-title{ font-family:'Cormorant Garamond',serif; font-size:clamp(22px,4vw,36px); font-weight:300; font-style:italic; color:#ffd88a; line-height:1.1; text-shadow:0 0 26px rgba(255,216,138,.38); }
+.moon-phase{ display:flex; align-items:center; gap:6px; font-size:10px; font-weight:500; letter-spacing:1.5px; color:rgba(168,212,245,.52); margin-top:4px; }
+.phase-dot { width:6px; height:6px; border-radius:50%; background:#ffd88a; opacity:.65; flex-shrink:0; }
+
+/* note content */
+.divider { display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+.divider span { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(111,174,232,.24)); }
+.divider span:last-child { background:linear-gradient(270deg,transparent,rgba(111,174,232,.24)); }
+.greeting  { font-family:'Cormorant Garamond',serif; font-size:19px; color:#a8d4f5; margin-bottom:18px; line-height:1.55; }
+.body-text { font-size:15px; color:rgba(168,212,245,.74); line-height:1.9; margin-bottom:14px; }
+.hl        { color:#ddeeff; font-weight:500; }
+.italic-ln { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; color:#a8d4f5; margin:20px 0; padding-left:16px; border-left:2px solid rgba(111,174,232,.34); line-height:1.65; }
+.sign-off  { margin-top:30px; display:flex; justify-content:flex-end; }
+.sign-from { font-size:10px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:rgba(111,174,232,.46); margin-bottom:4px; }
+.sign-name { font-family:'Cormorant Garamond',serif; font-size:32px; font-style:italic; font-weight:300; color:#ffd88a; text-shadow:0 0 20px rgba(255,216,138,.34); }
+
+/* ════════════════════════════════
+   ENVELOPE
+════════════════════════════════ */
+#env-outer {
+  width:100%;
+  cursor:pointer;
+  position:relative;
+  z-index:20;
+  margin-top:12px;
+  filter:drop-shadow(0 20px 50px rgba(0,0,0,.65));
+  transition:transform .2s ease;
+}
+#env-outer:hover { transform:scale(1.01); }
+#env-outer.done  { pointer-events:none; }
+
+/* SVG envelope fills full width */
+#env-svg { width:100%; display:block; }
+
+/* wax seal overlay centred on envelope */
+.seal-wrap {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  transition:opacity .35s, transform .35s;
+}
+.seal-wrap.hidden { opacity:0; transform:translate(-50%,-50%) scale(0); }
+.seal {
+  width:56px; height:56px; border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#4a90d9,#1a4a8e 55%,#0e2f66 100%);
+  box-shadow:0 0 0 3px rgba(111,174,232,.28), 0 0 16px 4px rgba(74,127,193,.32), 0 4px 12px rgba(0,0,0,.5);
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px;
+}
+
+/* flap animation via JS-controlled transform */
+#env-flap {
+  transform-origin:top center;
+  transform-box:fill-box;
+  transition:transform .85s cubic-bezier(.4,0,.2,1);
+}
+#env-flap.open { transform:rotateX(-180deg); }
+
+/* hint */
+#hint {
+  margin-top:16px;
+  font-size:11px; font-weight:500; letter-spacing:3px; text-transform:uppercase;
+  color:rgba(111,174,232,.48);
+  animation:pulse 2s ease-in-out infinite;
+  transition:opacity .4s;
+}
+#hint.gone { opacity:0; }
+@keyframes pulse {
+  0%,100%{opacity:.45;} 50%{opacity:1;}
+}
+
+/* responsive */
+@media(max-width:480px){
+  .moon-header{flex-direction:column;align-items:center;gap:12px;}
+  .moon-text{align-items:center;text-align:center;}
+  .note-card{padding:28px 22px 32px;}
+  .moon-wrap{width:110px;height:110px;}
+  .moon{width:105px;height:105px;}
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<!-- clouds -->
+<div class="cloud c1"><svg width="180" height="80" viewBox="0 0 180 80" fill="none">
+  <ellipse cx="90" cy="56" rx="80" ry="24" fill="rgba(74,127,193,.10)"/>
+  <ellipse cx="70" cy="44" rx="44" ry="28" fill="rgba(74,127,193,.09)"/>
+  <ellipse cx="110" cy="40" rx="38" ry="26" fill="rgba(111,174,232,.07)"/>
+</svg></div>
+<div class="cloud c2"><svg width="220" height="90" viewBox="0 0 220 90" fill="none">
+  <ellipse cx="110" cy="66" rx="100" ry="24" fill="rgba(74,127,193,.08)"/>
+  <ellipse cx="85" cy="52" rx="52" ry="32" fill="rgba(74,127,193,.07)"/>
+  <ellipse cx="135" cy="46" rx="48" ry="30" fill="rgba(111,174,232,.06)"/>
+</svg></div>
+<div class="cloud c3"><svg width="160" height="70" viewBox="0 0 160 70" fill="none">
+  <ellipse cx="80" cy="50" rx="70" ry="20" fill="rgba(74,127,193,.09)"/>
+  <ellipse cx="62" cy="40" rx="38" ry="24" fill="rgba(74,127,193,.08)"/>
+  <ellipse cx="98" cy="36" rx="34" ry="22" fill="rgba(111,174,232,.06)"/>
+</svg></div>
+
+<div class="floaters" id="floaters"></div>
+
+<!-- ══ MAIN ══ -->
+<div id="main">
+
+  <!-- NOTE (hidden, rises up on open) -->
+  <div id="note">
+    <div class="note-card">
+      <div class="moon-header">
+        <div class="moon-wrap">
+          <div class="moon-halo"></div>
+          <div class="moon">
+            <div class="moon-craters"></div>
+            <div class="moon-shadow"></div>
+          </div>
+        </div>
+        <div class="moon-text">
+          <div class="moon-sub">March 16, 2003</div>
+          <div class="moon-title">Happy<br>Galentine's<br>Day</div>
+          <div class="moon-phase"><span class="phase-dot"></span>Waxing Gibbous · 96% illuminated</div>
+        </div>
+      </div>
+
+      <div class="divider"><span></span><span style="font-size:15px">💙</span><span></span></div>
+
+      <p class="greeting">Happy Galentine's Day to the person who has seen me at my absolute worst and somehow still claims me! 🎉</p>
+      <p class="body-text">You've been my <span class="hl">partner in crime</span>, my secret keeper, my shoulder to cry on, and my biggest hype woman — all wrapped up in one.</p>
+      <p class="italic-ln">Not everyone is lucky enough to have a sister. Even fewer are lucky enough to have one as amazing as me... okay, I know I'm awesome, but you're honestly the best. 💅</p>
+      <p class="body-text">I love you to the moon and back <span class="hl">(even when I steal your clothes)</span>.</p>
+
+      <div class="sign-off">
+        <div>
+          <div class="sign-from">with love,</div>
+          <div class="sign-name">Your Boots</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENVELOPE (SVG-based so it's crisp and clickable) -->
+  <div id="env-outer" onclick="openLetter()">
+    <svg id="env-svg" viewBox="0 0 580 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="envBg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#0d2248"/>
+          <stop offset="100%" stop-color="#071428"/>
+        </linearGradient>
+        <linearGradient id="leftFold" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%"   stop-color="#0c1e40"/>
+          <stop offset="100%" stop-color="#091830"/>
+        </linearGradient>
+        <linearGradient id="rightFold" x1="100%" y1="50%" x2="0%" y2="50%">
+          <stop offset="0%"   stop-color="#0c1e40"/>
+          <stop offset="100%" stop-color="#091830"/>
+        </linearGradient>
+        <linearGradient id="bottomFold" x1="50%" y1="0%" x2="50%" y2="100%">
+          <stop offset="0%"   stop-color="#0e2244"/>
+          <stop offset="100%" stop-color="#081526"/>
+        </linearGradient>
+        <linearGradient id="flapGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+          <stop offset="0%"   stop-color="#1a3a6e"/>
+          <stop offset="100%" stop-color="#0d2044"/>
+        </linearGradient>
+        <!-- subtle shine on flap -->
+        <linearGradient id="flapShine" x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%"   stop-color="rgba(111,174,232,.18)"/>
+          <stop offset="100%" stop-color="rgba(111,174,232,0)"/>
+        </linearGradient>
+      </defs>
+
+      <!-- envelope body -->
+      <rect x="0" y="0" width="580" height="360" rx="10" ry="10" fill="url(#envBg)" stroke="rgba(111,174,232,.20)" stroke-width="1.5"/>
+
+      <!-- bottom fold triangle -->
+      <polygon points="0,180 290,360 580,180 580,360 0,360" fill="url(#bottomFold)" stroke="rgba(111,174,232,.12)" stroke-width="1"/>
+
+      <!-- left fold triangle -->
+      <polygon points="0,0 0,360 290,180" fill="url(#leftFold)" stroke="rgba(111,174,232,.10)" stroke-width="1"/>
+
+      <!-- right fold triangle -->
+      <polygon points="580,0 580,360 290,180" fill="url(#rightFold)" stroke="rgba(111,174,232,.10)" stroke-width="1"/>
+
+      <!-- flap (top triangle) — animated via CSS class -->
+      <g id="env-flap">
+        <polygon points="0,0 580,0 290,185" fill="url(#flapGrad)" stroke="rgba(111,174,232,.22)" stroke-width="1.5"/>
+        <polygon points="0,0 580,0 290,185" fill="url(#flapShine)" opacity=".6"/>
+      </g>
+
+      <!-- decorative inner line -->
+      <line x1="40" y1="355" x2="540" y2="355" stroke="rgba(111,174,232,.15)" stroke-width="1"/>
+    </svg>
+
+    <!-- wax seal -->
+    <div class="seal-wrap" id="sealWrap">
+      <div class="seal">💙</div>
+    </div>
+  </div>
+
+  <div id="hint">✦ tap to open ✦</div>
+</div>
+
+<script>
+// ── stars
+const starsEl = document.getElementById('stars');
+for(let i=0;i<180;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const sz=Math.random()*2.3+0.4;
+  Object.assign(s.style,{
+    width:sz+'px',height:sz+'px',
+    top:Math.random()*100+'%',
+    left:Math.random()*100+'%',
+    '--lo':(Math.random()*.2+.06).toFixed(2),
+    '--d':(Math.random()*3+2).toFixed(1)+'s',
+    animationDelay:(Math.random()*5).toFixed(1)+'s'
+  });
+  starsEl.appendChild(s);
+}
+
+// ── floaters
+const floatersEl=document.getElementById('floaters');
+const syms=['💙','🩵','💫','✨','⭐','🌙','💕','🤍','🌟'];
+for(let i=0;i<18;i++){
+  const h=document.createElement('div');
+  h.className='p';
+  Object.assign(h.style,{
+    left:Math.random()*100+'%',
+    '--s':(Math.random()*14+10)+'px',
+    '--r':(Math.random()*40-20).toFixed(0)+'deg',
+    '--dur':(Math.random()*10+12).toFixed(1)+'s',
+    '--delay':(Math.random()*16).toFixed(1)+'s'
+  });
+  h.textContent=syms[Math.floor(Math.random()*syms.length)];
+  floatersEl.appendChild(h);
+}
+
+// ── open letter
+let opened=false;
+function openLetter(){
+  if(opened) return;
+  opened=true;
+
+  // 1. flip flap open
+  document.getElementById('env-flap').classList.add('open');
+
+  // 2. hide seal
+  document.getElementById('sealWrap').classList.add('hidden');
+
+  // 3. hide hint
+  document.getElementById('hint').classList.add('gone');
+
+  // 4. mark envelope done
+  document.getElementById('env-outer').classList.add('done');
+
+  // 5. show & rise note after flap starts opening
+  setTimeout(()=>{
+    document.getElementById('note').classList.add('rising');
+  }, 300);
+
+  // 6. burst hearts
+  const extra=['💙','🩵','💕','✨','💫','🌙','🌟'];
+  for(let i=0;i<14;i++){
+    const b=document.createElement('div');
+    b.className='p';
+    Object.assign(b.style,{
+      left:Math.random()*100+'%',
+      bottom:(Math.random()*20+5)+'%',
+      position:'fixed', zIndex:'99',
+      '--s':(Math.random()*18+10)+'px',
+      '--r':(Math.random()*60-30).toFixed(0)+'deg',
+      '--dur':(Math.random()*4+3).toFixed(1)+'s',
+      '--delay':(Math.random()*.5).toFixed(2)+'s'
+    });
+    b.textContent=extra[Math.floor(Math.random()*extra.length)];
+    document.body.appendChild(b);
+    setTimeout(()=>b.remove(),9000);
+  }
+}
+</script>
+</body>
+</html>
